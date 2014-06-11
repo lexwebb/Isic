@@ -11,10 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Isic.Scenes
-{
-    class LevelEditor : Scene
-    {
+namespace Isic.Scenes {
+    class LevelEditor : Scene {
         static int MOUSE_MOVE_MIN = 20;
         Vector2 mouseHoldOffset;
         GameObject objectBeingHeld;
@@ -37,20 +35,17 @@ namespace Isic.Scenes
         #endregion
 
         public LevelEditor(String name) :
-            base(name)
-        {
+            base(name) {
             font = EngineContentManager.GetXNAContent().Load<SpriteFont>("Visitor");
         }
 
-        public override void Draw()
-        {
+        public override void Draw() {
             Engine.GameSpriteBatch.DrawString(font, mousePos.ToString(), new Vector2(10, 10), Color.White);
             DrawUtilities.DrawLineNegativeY(Engine.GameSpriteBatch, new Vector2(0, 10), new Vector2(0, -10), 1, Color.White);
-            DrawUtilities.DrawLineNegativeY(Engine.GameSpriteBatch, new Vector2(10, 0), new Vector2(-10, 0), 1, Color.White);           
+            DrawUtilities.DrawLineNegativeY(Engine.GameSpriteBatch, new Vector2(10, 0), new Vector2(-10, 0), 1, Color.White);
         }
 
-        public override void DrawForeground()
-        {
+        public override void DrawForeground() {
             if (selectedObject != null)
                 DrawUtilities.DrawGameObjBorder(Engine.GameSpriteBatch, new Rectangle(
                     (int)(selectedObject.Body.Position.X - selectedObject.Width / 2),
@@ -58,16 +53,15 @@ namespace Isic.Scenes
                     (int)selectedObject.Width, (int)selectedObject.Height), Color.LimeGreen);
         }
 
-        public override void HandleInput(ControlManager controlManager)
-        {
+        public override void HandleInput(ControlManager controlManager) {
             mousePos = controlManager.MousePosition;
             Vector2 worldMousePos = Engine.Gameworld.Camera.GetRelativeWorldMousePos(mousePos);
-            
+
             #region Camera
-            if (controlManager.IsKeyDown(Keys.A) || (controlManager.MousePosition.X < MOUSE_MOVE_MIN 
+            if (controlManager.IsKeyDown(Keys.A) || (controlManager.MousePosition.X < MOUSE_MOVE_MIN
                 && controlManager.MousePosition.X > 0))
                 Engine.Gameworld.Camera.Focus += new Vector2(-2, 0);
-            if (controlManager.IsKeyDown(Keys.D) || (controlManager.MousePosition.X > Engine.GetGraphicsDevice().Viewport.Width - MOUSE_MOVE_MIN 
+            if (controlManager.IsKeyDown(Keys.D) || (controlManager.MousePosition.X > Engine.GetGraphicsDevice().Viewport.Width - MOUSE_MOVE_MIN
                 && controlManager.MousePosition.X < Engine.GetGraphicsDevice().Viewport.Width))
                 Engine.Gameworld.Camera.Focus += new Vector2(2, 0);
             if (controlManager.IsKeyDown(Keys.W) || (controlManager.MousePosition.Y < MOUSE_MOVE_MIN
@@ -80,62 +74,32 @@ namespace Isic.Scenes
             Engine.Gameworld.Camera.TargetScale += (float)controlManager.ScrollAmount / 500;
             #endregion
 
-            if (controlManager.IsLeftClicked)
-            {
+            if (controlManager.IsLeftClicked) {
                 Console.Out.WriteLine("World Click pos: " + worldMousePos);
-                foreach(GameObject obj in this.GameObjects){
-                    if (Vector2.Distance(worldMousePos, obj.Body.Position) < obj.Width + obj.Height) 
-                    {
-                        //Console.Out.WriteLine("Clicked near object " + obj.Name);
-
-                        //a = obj.Body.Position;
-                        //b = GeometryHelper.RotateVectorAboutPoint(obj.Body.Position + new Vector2(obj.Width, 0), obj.Body.Position, obj.Body.Rotation);
-                        //c = GeometryHelper.RotateVectorAboutPoint(obj.Body.Position + new Vector2(obj.Width, obj.Height), obj.Body.Position, obj.Body.Rotation);
-                        //d = GeometryHelper.RotateVectorAboutPoint(obj.Body.Position + new Vector2(0, obj.Height), obj.Body.Position, obj.Body.Rotation);
-                        //if (GeometryHelper.IsPointInRectangle(worldMousePos, a, b, c, d))
-                        //{
-                        //    Console.Out.WriteLine("Clicked on object " + obj.Name);
-                        //}
-
+                foreach (GameObject obj in this.GameObjects) {
+                    if (Vector2.Distance(worldMousePos, obj.Body.Position) < obj.Width + obj.Height) {
                         Rectangle rec = new Rectangle((int)(obj.Body.Position.X - obj.Width / 2), (int)(obj.Body.Position.Y - obj.Height / 2), (int)obj.Width, (int)obj.Height);
-                        if (rec.Contains(new Point((int)worldMousePos.X, (int)worldMousePos.Y)))
-                        {
+                        if (rec.Contains(new Point((int)worldMousePos.X, (int)worldMousePos.Y))) {
                             this.selectedObject = obj;
                             this.txtObjectName.Text = selectedObject.Name;
                             this.txtXPos.Text = selectedObject.Position.X.ToString();
                             this.txtYPos.Text = selectedObject.Position.Y.ToString();
-                        }                            
+                        }
                     }
                 }
             }
 
-            if (controlManager.IsLeftReleased)
-            {
+            if (controlManager.IsLeftReleased) {
                 this.mouseHoldOffset = Vector2.Zero;
                 this.isObjectHeld = false;
                 this.objectBeingHeld = null;
             }
 
-            if (controlManager.IsLeftHeld)
-            {
-                foreach (GameObject obj in this.GameObjects)
-                {
-                    if (Vector2.Distance(worldMousePos, obj.Body.Position) < obj.Width + obj.Height || isObjectHeld && obj == objectBeingHeld)
-                    {
-                        //Console.Out.WriteLine("Clicked near object " + obj.Name);
-
-                        //a = obj.Body.Position;
-                        //b = GeometryHelper.RotateVectorAboutPoint(obj.Body.Position + new Vector2(obj.Width, 0), obj.Body.Position, obj.Body.Rotation);
-                        //c = GeometryHelper.RotateVectorAboutPoint(obj.Body.Position + new Vector2(obj.Width, obj.Height), obj.Body.Position, obj.Body.Rotation);
-                        //d = GeometryHelper.RotateVectorAboutPoint(obj.Body.Position + new Vector2(0, obj.Height), obj.Body.Position, obj.Body.Rotation);
-                        //if (GeometryHelper.IsPointInRectangle(worldMousePos, a, b, c, d))
-                        //{
-                        //    Console.Out.WriteLine("Clicked on object " + obj.Name);
-                        //}
-
+            if (controlManager.IsLeftHeld) {
+                foreach (GameObject obj in this.GameObjects) {
+                    if (Vector2.Distance(worldMousePos, obj.Body.Position) < obj.Width + obj.Height || isObjectHeld && obj == objectBeingHeld) {
                         Rectangle rec = new Rectangle((int)(obj.Body.Position.X - obj.Width / 2), (int)(obj.Body.Position.Y - obj.Height / 2), (int)obj.Width, (int)obj.Height);
-                        if (rec.Contains(new Point((int)worldMousePos.X, (int)worldMousePos.Y)) || isObjectHeld && obj == objectBeingHeld)
-                        {
+                        if (rec.Contains(new Point((int)worldMousePos.X, (int)worldMousePos.Y)) || isObjectHeld && obj == objectBeingHeld) {
                             if (this.mouseHoldOffset == Vector2.Zero)
                                 this.mouseHoldOffset = worldMousePos - obj.Position;
                             obj.Position = worldMousePos - mouseHoldOffset;
@@ -146,16 +110,15 @@ namespace Isic.Scenes
                 }
             }
 
-            if (controlManager.IsKeyDown(Keys.Escape))
-            {
+            if (controlManager.IsKeyDown(Keys.Escape)) {
                 this.selectedObject = null;
                 this.txtObjectName.Text = ""; this.txtXPos.Text = ""; this.txtYPos.Text = "";
-            }               
+            }
         }
 
-        public override void LoadContent()
-        {
+        public override void LoadContent() {
             #region Controls
+
             pnlObj = new Panel(Vector2.Zero, 200, 400, null, null, Color.DimGray);
             pnlObj.Alignment = Alignment.AboveRight;
             pnlObj.Transparency = 0.5f;
@@ -253,26 +216,25 @@ namespace Isic.Scenes
             //Engine.GuiManager.RegisterControl("txtTest", txtTest);
         }
 
-        private void OnBtnSaveNameClick(Vector2 pos) { if(selectedObject != null){ selectedObject.Name = txtObjectName.Text; }}
+        private void OnBtnSaveNameClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Name = txtObjectName.Text; } }
 
-        private void OnBtnPosLeftClick(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(-1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); }}
+        private void OnBtnPosLeftClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(-1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
 
-        private void OnBtnPosLeftHold(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(-1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); }}
+        private void OnBtnPosLeftHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(-1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
 
-        private void OnBtnPosRightClick(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); }}
+        private void OnBtnPosRightClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
 
-        private void OnBtnPosRightHold(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); }}
+        private void OnBtnPosRightHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
 
-        private void OnBtnPosUpClick(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(0, 1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); }}
+        private void OnBtnPosUpClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, 1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
 
-        private void OnBtnPosUpHold(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(0, 1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); }}
+        private void OnBtnPosUpHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, 1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
 
-        private void OnBtnPosDownClick(Vector2 pos) { if (selectedObject != null){ selectedObject.Position += new Vector2(0, -1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); }}
+        private void OnBtnPosDownClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, -1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
 
         private void OnBtnPosDownHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, -1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
-        {
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime) {
             //throw new NotImplementedException();
         }
     }

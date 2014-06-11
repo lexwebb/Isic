@@ -11,33 +11,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Isic.Scenes
-{
-    class TestScene : Scene
-    {
+namespace Isic.Scenes {
+    class TestScene : Scene {
         GameObject crate;
         FixedPlane plane;
         Skeleton skeleton;
         SkeletonRenderer skRenderer;
 
         public TestScene(string name) :
-            base(name)
-        {
+            base(name) {
 
         }
 
-        public override void HandleInput(ControlManager controlManager)
-        {
-            if (controlManager.IsLeftClicked)
-            {
+        public override void HandleInput(ControlManager controlManager) {
+            if (controlManager.IsLeftClicked) {
                 Engine.Gameworld.CurrentScene.GameObjects.Add(new Crate(Engine.Gameworld.World, "crate", Engine.Gameworld.Camera.GetRelativeWorldMousePos(controlManager.MousePosition), BodyType.Dynamic));
                 Console.Out.WriteLine("Mouse Position: " + controlManager.MousePosition);
                 Console.Out.WriteLine("Camera Relative Mouse Position: " + Engine.Gameworld.Camera.GetRelativeWorldMousePos(controlManager.MousePosition));
                 Console.Out.WriteLine(Engine.Gameworld.World.BodyList.Count());
             }
 
-            if (controlManager.ScrollAmount != 0)
-            {
+            Engine.Gameworld.Camera.TargetScale += (float)controlManager.ScrollAmount / 500;
+
+            if (controlManager.ScrollAmount != 0) {
                 Console.Out.WriteLine("Scrolled by: " + controlManager.ScrollAmount + " : " + (float)Math.Round((double)controlManager.ScrollAmount / 1200d, 1));
                 //gameworld.Camera.Scale += (float)controlManager.ScrollAmount / 1200f;
                 //skeleton.PrimaryNode.Rotation = skeleton.PrimaryNode.Rotation + (float)controlManager.ScrollAmount / 12000f;
@@ -54,20 +50,18 @@ namespace Isic.Scenes
                 Engine.Gameworld.Camera.Position += new Vector2(0, 5);
 
             if (controlManager.IsKeyDown(Keys.D))
-                crate.Body.ApplyForce(new Vector2(100000, 0));
+                crate.Body.ApplyForce(new Vector2(1000000, 0));
             if (controlManager.IsKeyDown(Keys.A))
-                crate.Body.ApplyForce(new Vector2(-100000, 0));
+                crate.Body.ApplyForce(new Vector2(-1000000, 0));
             if (controlManager.IsKeyDown(Keys.W))
-                crate.Body.ApplyForce(new Vector2(0, 100000));
+                crate.Body.ApplyForce(new Vector2(0, 1000000));
         }
 
-        public override void Update(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
             Engine.Gameworld.Camera.Focus = crate.Position;
         }
 
-        public override void LoadContent()
-        {
+        public override void LoadContent() {
             Engine.Gameworld.CurrentScene.RegisterNewTexture("tex_Box.png");
             Engine.Gameworld.CurrentScene.RegisterNewTexture("CheckboxChecked.bmp");
             Engine.Gameworld.CurrentScene.RegisterNewTexture("CheckboxUnChecked.bmp");
@@ -111,14 +105,12 @@ namespace Isic.Scenes
             //button.RegisterListener(Test, MouseButton.Left, ButtonAction.OnClick);  
         }
 
-        public override void Draw()
-        {
-            
+        public override void Draw() {
+
         }
 
-        public override void DrawForeground()
-        {
-            
+        public override void DrawForeground() {
+
         }
     }
 }

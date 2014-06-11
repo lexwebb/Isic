@@ -18,13 +18,11 @@ using Isic.Menus;
 using Isic.Scenes;
 #endregion
 
-namespace Isic
-{
+namespace Isic {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class IsicGame : Game
-    {
+    public class IsicGame : Game {
         static GraphicsDeviceManager graphics;
 
         Engine engine;
@@ -34,10 +32,9 @@ namespace Isic
         TimeSpan elapsedTime = TimeSpan.Zero;
 
         public IsicGame()
-            : base()
-        {
+            : base() {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";           
+            Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -46,25 +43,23 @@ namespace Isic
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize()
-        {
+        protected override void Initialize() {
             engine = new Engine(this, graphics);
             engine.Initialize();
-            Engine.Gameworld.CurrentScene = new LevelEditor("MainMenu");
+            Engine.Gameworld.CurrentScene = new TestScene("MainMenu");
             //engine.CurrentMenu = new MainMenu();
 
             this.IsMouseVisible = true;
             this.Window.AllowUserResizing = true;
-            
-            base.Initialize();          
+
+            base.Initialize();
         }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
-        {
+        protected override void LoadContent() {
             engine.LoadContent();
         }
 
@@ -72,8 +67,7 @@ namespace Isic
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
         /// </summary>
-        protected override void UnloadContent()
-        {
+        protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
@@ -82,26 +76,23 @@ namespace Isic
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
+        protected override void Update(GameTime gameTime) {
             engine.Update(gameTime);
 
             base.Update(gameTime);
         }
 
-        
+
 
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
+        protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
 
             engine.Draw(gameTime);
-
         }
     }
 }
