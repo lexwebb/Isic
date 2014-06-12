@@ -82,8 +82,7 @@ namespace Isic.Scenes {
                         if (rec.Contains(new Point((int)worldMousePos.X, (int)worldMousePos.Y))) {
                             this.selectedObject = obj;
                             this.txtObjectName.Text = selectedObject.Name;
-                            this.txtXPos.Text = selectedObject.Position.X.ToString();
-                            this.txtYPos.Text = selectedObject.Position.Y.ToString();
+                            UpdateTextBoxes();
                         }
                     }
                 }
@@ -112,7 +111,7 @@ namespace Isic.Scenes {
 
             if (controlManager.IsKeyDown(Keys.Escape)) {
                 this.selectedObject = null;
-                this.txtObjectName.Text = ""; this.txtXPos.Text = ""; this.txtYPos.Text = "";
+                this.txtObjectName.Text = ""; this.txtXPos.Text = "";
             }
         }
 
@@ -147,28 +146,36 @@ namespace Isic.Scenes {
             btnSaveName.RegisterListener(OnBtnSaveNameClick, MouseButton.Left, ButtonAction.OnClick);
             Engine.GuiManager.RegisterControl("btnSaveName", btnSaveName);
 
-            lblX = new Label("X:", font, Vector2.Zero, 20, 20, txtObjectName);
-            lblX.YOffset = 10;
-            Engine.GuiManager.RegisterControl("lblX", lblX);
+            btnPosUp = new Button("btnPosUp", "U", Vector2.Zero, 50, 20, txtObjectName, Color.Gray, Color.LightBlue, Color.Gray);
+            btnPosUp.ShowBorder = true;
+            btnPosUp.Alignment = Alignment.Below;
+            btnPosUp.TextColor = Color.White;
+            btnPosUp.YOffset = 10;
+            btnPosUp.XOffset = 30;
+            btnPosUp.RegisterListener(OnBtnPosUpClick, MouseButton.Left, ButtonAction.OnClick);
+            btnPosUp.RegisterListener(OnBtnPosUpHold, MouseButton.Left, ButtonAction.OnHold);
+            Engine.GuiManager.RegisterControl("btnPosUp", btnPosUp);
 
-            lblY = new Label("Y:", font, Vector2.Zero, 20, 20, lblX);
-            lblY.YOffset = 10;
-            Engine.GuiManager.RegisterControl("lblY", lblY);
-
-            btnPosLeft = new Button("btnPosLeft", "<", Vector2.Zero, 20, 20, lblX, Color.Gray, Color.LightBlue, Color.Gray);
-            btnPosLeft.ShowBorder = true;
-            btnPosLeft.Alignment = Alignment.Right;
-            btnPosLeft.TextColor = Color.White;
-            btnPosLeft.RegisterListener(OnBtnPosLeftClick, MouseButton.Left, ButtonAction.OnClick);
-            btnPosLeft.RegisterListener(OnBtnPosLeftHold, MouseButton.Left, ButtonAction.OnHold);
-            Engine.GuiManager.RegisterControl("btnPosLeft", btnPosLeft);
-
-            txtXPos = new TextBox(Vector2.Zero, 50, 20, "", font, btnPosLeft, Color.DarkGray);
-            txtXPos.Alignment = Alignment.Right;
-            txtXPos.XOffset = 10;
+            txtXPos = new TextBox(Vector2.Zero, 50, 20, "", font, btnPosUp, Color.DarkGray);
+            txtXPos.Alignment = Alignment.Below;
+            txtXPos.YOffset = 10;
             Engine.GuiManager.RegisterControl("txtXPos", txtXPos);
 
-            btnPosRight = new Button("btnPosRight", ">", Vector2.Zero, 20, 20, txtXPos, Color.Gray, Color.LightBlue, Color.Gray);
+            txtYPos = new TextBox(Vector2.Zero, 50, 20, "", font, txtXPos, Color.DarkGray);
+            txtYPos.Alignment = Alignment.Below;
+            txtYPos.YOffset = 10;
+            Engine.GuiManager.RegisterControl("txtYPos", txtYPos);
+
+            btnPosLeft = new Button("btnPosLeft", "L", Vector2.Zero, 20, 50, txtXPos, Color.Gray, Color.LightBlue, Color.Gray);
+            btnPosLeft.ShowBorder = true;
+            btnPosLeft.Alignment = Alignment.Left;
+            btnPosLeft.TextColor = Color.White;
+            btnPosLeft.XOffset = -10;
+            btnPosLeft.RegisterListener(OnBtnPosLeftClick, MouseButton.Left, ButtonAction.OnClick);
+            btnPosLeft.RegisterListener(OnBtnPosLeftHold, MouseButton.Left, ButtonAction.OnHold);
+            Engine.GuiManager.RegisterControl("btnPosLeft", btnPosLeft);         
+
+            btnPosRight = new Button("btnPosRight", "R", Vector2.Zero, 20, 50, txtXPos, Color.Gray, Color.LightBlue, Color.Gray);
             btnPosRight.ShowBorder = true;
             btnPosRight.Alignment = Alignment.Right;
             btnPosRight.TextColor = Color.White;
@@ -177,27 +184,16 @@ namespace Isic.Scenes {
             btnPosRight.RegisterListener(OnBtnPosRightHold, MouseButton.Left, ButtonAction.OnHold);
             Engine.GuiManager.RegisterControl("btnPosRight", btnPosRight);
 
-            btnPosDown = new Button("btnPosDown", "<", Vector2.Zero, 20, 20, lblY, Color.Gray, Color.LightBlue, Color.Gray);
+            btnPosDown = new Button("btnPosDown", "D", Vector2.Zero, 50, 20, txtYPos, Color.Gray, Color.LightBlue, Color.Gray);
             btnPosDown.ShowBorder = true;
-            btnPosDown.Alignment = Alignment.Right;
+            btnPosDown.Alignment = Alignment.Below;
             btnPosDown.TextColor = Color.White;
+            btnPosDown.YOffset = 10;
             btnPosDown.RegisterListener(OnBtnPosDownClick, MouseButton.Left, ButtonAction.OnClick);
             btnPosDown.RegisterListener(OnBtnPosDownHold, MouseButton.Left, ButtonAction.OnHold);
             Engine.GuiManager.RegisterControl("btnPosDown", btnPosDown);
 
-            txtYPos = new TextBox(Vector2.Zero, 50, 20, "", font, btnPosDown, Color.DarkGray);
-            txtYPos.Alignment = Alignment.Right;
-            txtYPos.XOffset = 10;
-            Engine.GuiManager.RegisterControl("txtYPos", txtYPos);
-
-            btnPosUp = new Button("btnPosUp", ">", Vector2.Zero, 20, 20, txtYPos, Color.Gray, Color.LightBlue, Color.Gray);
-            btnPosUp.ShowBorder = true;
-            btnPosUp.Alignment = Alignment.Right;
-            btnPosUp.TextColor = Color.White;
-            btnPosUp.XOffset = 10;
-            btnPosUp.RegisterListener(OnBtnPosUpClick, MouseButton.Left, ButtonAction.OnClick);
-            btnPosUp.RegisterListener(OnBtnPosUpHold, MouseButton.Left, ButtonAction.OnHold);
-            Engine.GuiManager.RegisterControl("btnPosUp", btnPosUp);
+            
 
             #endregion
 
@@ -216,23 +212,28 @@ namespace Isic.Scenes {
             //Engine.GuiManager.RegisterControl("txtTest", txtTest);
         }
 
+        private void UpdateTextBoxes() {
+            this.txtXPos.Text = Math.Round(selectedObject.Position.X, 2).ToString();
+            this.txtYPos.Text = Math.Round(selectedObject.Position.Y, 2).ToString();
+        }
+
         private void OnBtnSaveNameClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Name = txtObjectName.Text; } }
 
-        private void OnBtnPosLeftClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(-1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
+        private void OnBtnPosLeftClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(-1, 0); UpdateTextBoxes(); } }
 
-        private void OnBtnPosLeftHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(-1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
+        private void OnBtnPosLeftHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(-1, 0); UpdateTextBoxes(); } }
 
-        private void OnBtnPosRightClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
+        private void OnBtnPosRightClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(1, 0); UpdateTextBoxes(); } }
 
-        private void OnBtnPosRightHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(1, 0); this.txtXPos.Text = selectedObject.Position.X.ToString(); } }
+        private void OnBtnPosRightHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(1, 0); UpdateTextBoxes(); } }
 
-        private void OnBtnPosUpClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, 1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
+        private void OnBtnPosUpClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, 1); UpdateTextBoxes(); } }
 
-        private void OnBtnPosUpHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, 1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
+        private void OnBtnPosUpHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, 1); UpdateTextBoxes(); } }
 
-        private void OnBtnPosDownClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, -1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
+        private void OnBtnPosDownClick(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, -1); UpdateTextBoxes(); } }
 
-        private void OnBtnPosDownHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, -1); this.txtYPos.Text = selectedObject.Position.Y.ToString(); } }
+        private void OnBtnPosDownHold(Vector2 pos) { if (selectedObject != null) { selectedObject.Position += new Vector2(0, -1); UpdateTextBoxes(); } }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime) {
             //throw new NotImplementedException();
