@@ -192,10 +192,8 @@ namespace Isic.Scenes {
             btnPosDown.RegisterListener(OnBtnPosDownClick, MouseButton.Left, ButtonAction.OnClick);
             btnPosDown.RegisterListener(OnBtnPosDownHold, MouseButton.Left, ButtonAction.OnHold);
             Engine.GuiManager.RegisterControl("btnPosDown", btnPosDown);
-
-            
-
             #endregion
+
 
             this.RegisterNewTexture("tex_Crate.png");
 
@@ -206,10 +204,6 @@ namespace Isic.Scenes {
             Crate crate2 = new Crate(Engine.Gameworld.World, "crate2", new Vector2(-6, 10), FarseerPhysics.Dynamics.BodyType.Static);
             crate.Body.Rotation = 0;
             this.GameObjects.Add(crate2);
-
-            //TextBox txtTest = new TextBox(Vector2.Zero, 50, 20, "Poop", EngineContentManager.GetXNAContent().Load<SpriteFont>("Visitor"), pnlObj, EngineContentManager.GetTexture("5020button.png"));
-            //txtTest.YOffset = 20;
-            //Engine.GuiManager.RegisterControl("txtTest", txtTest);
         }
 
         private void UpdateTextBoxes() {

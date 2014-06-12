@@ -46,7 +46,7 @@ namespace Isic {
         protected override void Initialize() {
             engine = new Engine(this, graphics);
             engine.Initialize();
-            Engine.Gameworld.CurrentScene = new LevelEditor("MainMenu");
+            Engine.Gameworld.CurrentScene = new TestScene("MainMenu");
             //engine.CurrentMenu = new MainMenu();
 
             this.IsMouseVisible = true;
